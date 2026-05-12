@@ -1,0 +1,54 @@
+@startuml DiagramaDePacotes_Olimpiadas
+
+skinparam packageBackgroundColor #F0F4F8
+skinparam packageBorderColor #2C3E50
+skinparam classBorderColor #2C3E50
+skinparam arrowColor #2C3E50
+skinparam shadowing false
+
+package "GestaoOlimpiadas" {
+
+  package "controller" {
+    class AtletaController
+    class CompeticaoController
+    class LocalController
+    class ResultadoController
+    class MedalhaController
+  }
+
+  package "service" {
+    class AtletaService
+    class CompeticaoService
+    class LocalService
+    class ResultadoService
+    class MedalhaService
+  }
+
+  package "repository" {
+    interface AtletaRepository
+    interface CompeticaoRepository
+    interface LocalRepository
+    interface PaisRepository
+    interface ResultadoRepository
+    interface MedalhaRepository
+  }
+
+  package "model" {
+    class Atleta
+    class Competicao
+    class Local
+    class Pais
+    class Resultado
+    class Medalha
+    class InscricaoCompeticao
+  }
+
+}
+
+' Fluxo de cima para baixo
+controller -down..> service    : <<access>>
+service    -down..> repository : <<access>>
+repository -down...> model      : <<import>>
+service    -down..> model      : <<import>>
+
+@enduml

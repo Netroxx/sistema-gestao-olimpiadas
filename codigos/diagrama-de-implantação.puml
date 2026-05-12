@@ -1,0 +1,37 @@
+@startuml DiagramaDeImplantacao_Olimpiadas
+
+skinparam nodeBackgroundColor #F0F4F8
+skinparam nodeBorderColor #2C3E50
+skinparam arrowColor #2C3E50
+skinparam arrowThickness 1.5
+skinparam shadowing false
+
+actor "Usuário" as usuario
+
+node "Navegador Web\n(React + Vite)" as browser {
+  artifact "sgo-frontend.js"
+}
+
+node "Servidor Docker" as docker {
+
+  node "Container: Frontend\n(Nginx)" as containerFront {
+    artifact "React App\n(Vite Build)"
+  }
+
+  node "Container: Backend\n(Java Spring Boot)" as containerBack {
+    artifact "GestaoOlimpiadas-backend.jar"
+  }
+
+  node "Container: Banco de Dados\n(PostgreSQL)" as containerDB {
+    database "gestaoOlimpiadas_database" as db
+  }
+
+}
+
+' Fluxo principal
+usuario        -down-> browser         : HTTPS
+browser        -down-> containerFront  : HTTPS :443
+containerFront -down-> containerBack   : HTTP :8080
+containerBack  -down-> containerDB     : JDBC :5432
+
+@enduml

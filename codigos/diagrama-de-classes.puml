@@ -1,0 +1,97 @@
+@startuml DiagramaDeClasses_Olimpiadas
+
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #2C3E50
+skinparam arrowColor #2C3E50
+skinparam arrowThickness 1.5
+skinparam shadowing false
+
+enum TipoMedalha {
+  OURO
+  PRATA
+  BRONZE
+}
+
+enum StatusCompeticao {
+  AGENDADA
+  EM_ANDAMENTO
+  FINALIZADA
+  CANCELADA
+}
+
+enum Modalidade {
+  NATACAO
+  ATLETISMO
+  GINASTICA
+  JUDO
+  VOLEI
+  FUTEBOL
+}
+
+class Local {
+  - idLocal    : Long
+  - nomeLocal  : String
+  - cidade     : String
+  - capacidade : Integer
+}
+
+class Competicao {
+  - idCompeticao : Long
+  - data         : LocalDate
+  - horario      : LocalTime
+  - status       : StatusCompeticao
+  - modalidade   : Modalidade
+}
+
+class Atleta {
+  - idAtleta         : Long
+  - nome             : String
+  - numeroCredencial : String
+  - dataNascimento   : LocalDate
+}
+
+class Pais {
+  - idPais   : Long
+  - nomePais : String
+}
+
+class Resultado {
+  - idResultado    : Long
+  - atletaOuro     : String
+  - atletaPrata    : String
+  - atletaBronze   : String
+}
+
+class Medalha {
+  - idMedalha   : Long
+  - dataEntrega : LocalDate
+  - tipo        : TipoMedalha
+  - modalidade  : Modalidade
+}
+
+class InscricaoCompeticao {
+  - dataInscricao   : LocalDate
+  - statusInscricao : String
+}
+
+' para relacionamento de composicao
+Local      "1"    *-- "0..*" Competicao : contém >
+Competicao "1"    *-- "0..1" Resultado  : gera >
+Pais       "1"    *-- "0..*" Medalha    : acumula >
+
+' para relacionamento de agregacao
+Pais  "1"    o-- "1..*" Atleta     : representa >
+Resultado "1" o-- "3"  Atleta     : classifica >
+
+' foi criada uma classe associativa pra repressentar melho
+Atleta     "1..*" -- "1..*" Competicao
+InscricaoCompeticao . Atleta
+InscricaoCompeticao . Competicao
+
+' enums
+Competicao ..> StatusCompeticao : usa
+Competicao ..> Modalidade       : usa
+Medalha    ..> TipoMedalha      : usa
+Medalha    ..> Modalidade       : usa
+
+@enduml
