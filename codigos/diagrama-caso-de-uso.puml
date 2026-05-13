@@ -1,0 +1,37 @@
+@startuml diagrama-de-caso-de-uso
+
+title Diagrama de Caso de Uso - Sistema de Gestao das Olimpiadas
+
+actor Administrador
+actor Organizador
+actor Delegacao
+actor Arbitro
+actor Usuario
+
+Administrador --> (Cadastrar Atleta)
+Administrador --> (Cadastrar Local)
+
+Organizador --> (Cadastrar Competicao)
+Organizador --> (Editar Competicao)
+Organizador --> (Alocar Local)
+
+Delegacao --> (Inscrever Atleta)
+Delegacao --> (Cancelar Inscricao)
+
+Arbitro --> (Registrar Resultado)
+
+Usuario --> (Listar Competicoes)
+Usuario --> (Consultar Resultado)
+Usuario --> (Gerar Relatorio de Medalhas)
+
+(Cadastrar Competicao)  --> (Validar Conflito de Horario) : <<include>>
+(Editar Competicao)     --> (Validar Conflito de Horario) : <<include>>
+(Alocar Local)          --> (Verificar Disponibilidade)   : <<include>>
+(Inscrever Atleta)      --> (Validar Pais por Modalidade) : <<include>>
+
+(Cancelar Inscricao)          ..> (Inscrever Atleta)            : <<extend>>
+(Filtrar Relatorio)           ..> (Gerar Relatorio de Medalhas) : <<extend>>
+(Exportar Relatorio)          ..> (Gerar Relatorio de Medalhas) : <<extend>>
+(Consultar Resultado)         ..> (Registrar Resultado)         : <<extend>>
+
+@enduml

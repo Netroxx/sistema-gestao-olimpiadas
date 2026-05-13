@@ -1,0 +1,71 @@
+@startuml diagrama-de-componentes
+
+title Diagrama de Componentes - Sistema de Gestão das Olimpíadas 
+
+package "Interface de Usuário" {
+    [TelaCompetições]  <<component>>
+    [TelaAtletas]      <<component>>
+    [TelaLocais]       <<component>>
+    [TelaResultados]   <<component>>
+    [TelaRelatorios]   <<component>>
+}
+
+package "Módulo de Competições" {
+    [ControladorCompeticao] <<component>>
+    interface "ICompeticao" as IComp
+    [ControladorCompeticao] o-- IComp : fornece
+}
+
+package "Módulo de Inscrições" {
+    [ControladorInscricao] <<component>>
+    interface "IInscricao" as IInscricao
+    [ControladorInscricao] o-- IInscricao : fornece
+    [ControladorInscricao] ..> IComp : requer
+}
+
+package "Módulo de Alocação" {
+    [ControladorAlocacao] <<component>>
+    interface "IAlocacao" as IAloc
+    [ControladorAlocacao] o-- IAloc : fornece
+    [ControladorAlocacao] ..> IComp : requer
+}
+
+package "Módulo de Resultados" {
+    [ControladorResultado] <<component>>
+    interface "IResultado" as IResult
+    [ControladorResultado] o-- IResult : fornece
+    [ControladorResultado] ..> IComp : requer
+}
+
+package "Módulo de Relatórios" {
+    [GeradorRelatorio] <<component>>
+    interface "IRelatorio" as IRel
+    [GeradorRelatorio] o-- IRel : fornece
+    [GeradorRelatorio] ..> IResult    : requer
+    [GeradorRelatorio] ..> IInscricao : requer
+}
+
+package "Módulo de Persistência" {
+    [ControladorBD] <<component>>
+    [BancoDeDados]  <<database>>
+    interface "IBancoDeDados" as IBD
+    [ControladorBD] o-- IBD : fornece
+    [ControladorBD] --> [BancoDeDados] : Consultar/Atualizar Dados
+}
+
+' moduulos
+[TelaCompetições] --> [ControladorCompeticao] : Interação do Usuário
+[TelaAtletas]     --> [ControladorInscricao]  : Interação do Usuário
+[TelaLocais]      --> [ControladorAlocacao]   : Interação do Usuário
+[TelaResultados]  --> [ControladorResultado]  : Interação do Usuário
+[TelaRelatorios]  --> [GeradorRelatorio]      : Interação do Usuário
+
+' persistencia
+[ControladorCompeticao] ..> IBD : requer
+[ControladorInscricao]  ..> IBD : requer
+[ControladorAlocacao]   ..> IBD : requer
+[ControladorResultado]  ..> IBD : requer
+[GeradorRelatorio]      ..> IBD : requer
+
+@enduml
+
