@@ -3,7 +3,7 @@
 Projeto desenvolvido para a disciplina de **Projeto de Software** — PUC Minas  
 Professor: João Paulo Carneiro Aramuni  
 Curso: Engenharia de Software — 4º Período  
-Alunos: Gabriel dos Santos e Vinicius Ribeiro
+Alunos: Gabriel dos Santos, Vinicius Ribeiro e Pedro Ballesteros
 
 ---
 
